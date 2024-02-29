@@ -1,0 +1,65 @@
+{
+  "compilerOptions": {
+    /* Base Options: */
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "es2022",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    /* Strictness */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "checkJs": true,
+    /* Bundled projects */
+    "lib": ["dom", "dom.iterable", "ES2022"],
+    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "incremental": true,
+    /* Path Aliases */
+    "baseUrl": ".",
+    "paths": {
+      "@modules": ["src/components/modules/index"],
+      "@modules/*": ["src/components/modules/*"],
+      "@common": ["src/components/common/index"],
+      "@common/*": ["src/components/common/*"],
+      "@layouts": ["src/components/layouts/index"],
+      "@layouts/*": ["src/components/layouts/*"],
+      "@hooks": ["src/utils/hooks/index"],
+      "@hooks/*": ["src/utils/hooks/*"],
+      "@images/*": ["public/images/*"],
+      "@styles": ["src/styles/index"],
+      "@styles/*": ["src/styles/*"],
+      "@server": ["src/server/index"],
+      "@server/*": ["src/server/*"],
+      "@store": ["src/store/index"],
+      "@store/*": ["src/store/*"],
+      "@queries": ["src/queries/index"],
+      "@queries/*": ["src/queries/*"],
+      "@utils": ["src/utils"],
+      "@utils/*": ["src/utils/*"],
+      "@env": ["src/env.js"],
+      "@types": ["src/types/index"],
+      "@vectors/*": ["public/vectors/*"]
+    }
+  },
+  "typeRoots": ["node_modules/@types"],
+  "exclude": ["node_modules"],
+  "include": [
+    ".eslintrc.cjs",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.cjs",
+    "**/*.js",
+    ".next/types/**/*.ts"
+  ]
+}
