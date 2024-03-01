@@ -22,13 +22,13 @@ const headingSizes = {
   },
 };
 
-function Heading({ children, variant = 'h1' }: HeadingProps) {
+function Heading({ children, variant = 'h1', ...props }: HeadingProps) {
   return (
     <>
-      {variant === 'h1' && <Heading1>{children}</Heading1>}
-      {variant === 'h2' && <Heading2>{children}</Heading2>}
-      {variant === 'h3' && <Heading3>{children}</Heading3>}
-      {variant === 'h4' && <Heading4>{children}</Heading4>}
+      {variant === 'h1' && <Heading1 {...props}>{children}</Heading1>}
+      {variant === 'h2' && <Heading2 {...props}>{children}</Heading2>}
+      {variant === 'h3' && <Heading3 {...props}>{children}</Heading3>}
+      {variant === 'h4' && <Heading4 {...props}>{children}</Heading4>}
     </>
   );
 }
@@ -36,11 +36,12 @@ function Heading({ children, variant = 'h1' }: HeadingProps) {
 Heading.displayName = 'Button';
 
 const HeadingCss = css<Omit<HeadingProps, 'children'>>`
-  font-weight: 300;
+  font-weight: 600;
   font-family: ${({ theme }) => theme.fonts.primary};
   font-size: ${({ variant }) => headingSizes[variant ?? 'h1'].mobile};
   line-height: ${({ lineHeight }) => lineHeight ?? '133%'};
-  color: ${({ color }) => color ?? 'black'};
+  color: ${({ theme, color }) => (color ? theme.colors[color] : theme.colors.black)};
+  margin: 0;
   text-align: ${({ align }) => align ?? 'left'};
 
   strong {

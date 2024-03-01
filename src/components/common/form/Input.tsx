@@ -1,48 +1,50 @@
 'use client';
 
-import { FieldError, Input, Text, TextField } from 'react-aria-components';
+import { useTextField } from 'react-aria';
+import { FieldError, Text, TextField } from 'react-aria-components';
 import type { ControllerRenderProps, FieldValues, Path } from 'react-hook-form';
 import styled from 'styled-components';
 
 import { Label } from './Label';
 
-function InputForm<T extends FieldValues, K extends Path<T> = any>({
+function Input<T extends FieldValues, K extends Path<T> = any>({
   label,
   description,
   errorMessage,
   field,
   ...props
 }: InputFormProps<T, K>) {
+  const { inputProps } = useTextField(props, field.ref as any);
+
   return (
     <TextField {...props}>
-      <Label>{label}</Label>
-      <StyledInput {...field} />
+      {label && <Label id={inputProps.name}>{label}</Label>}
+      <StyledInput
+        {...inputProps}
+        {...field}
+      />
       {description && <Text slot="description">{description}</Text>}
       <FieldError>{errorMessage}</FieldError>
     </TextField>
   );
 }
 
-InputForm.displayName = 'InputForm';
+Input.displayName = 'Input';
 
-const StyledInput = styled(Input)`
+const StyledInput = styled.input`
   display: flex;
   width: 100%;
+  height: 100%;
   padding: 0.4rem 0.6rem;
   font-size: 1.1rem;
+  border: none;
   border-radius: 0.3rem;
-  border: 1px solid #d1d5db;
-  background-color: #fff;
-  color: #000;
-  outline: none;
-  transition:
-    border-color 0.15s ease-in-out,
-    outline 0.15s ease-in-out,
-    box-shadow 0.15s ease-in-out;
+  background-color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.black};
+  outline-color: ${({ theme }) => theme.colors.secondary};
 
   &[data-focused] {
-    outline: 2px solid ${({ theme }) => theme.colors.primary};
-    outline-offset: -1px;
+    outline: 2px solid ${({ theme }) => theme.colors.secondary};
   }
 `;
 
@@ -50,9 +52,9 @@ type InputFormProps<T extends FieldValues, K extends Path<T>> = {
   description?: string | React.ReactNode;
   errorMessage?: string;
   field: ControllerRenderProps<T, K>;
-  label: string;
+  label?: string;
   placeholder?: string;
   style?: React.CSSProperties;
 };
 
-export { Input, InputForm };
+export { Input };

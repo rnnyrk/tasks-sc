@@ -1,21 +1,28 @@
 'use client';
 
-import { Button as ButtonAria, type ButtonProps as ButtonAriaProps } from 'react-aria-components';
+import { useRef } from 'react';
+import { useButton } from 'react-aria';
+import type { ButtonProps as ButtonAriaProps } from 'react-aria-components';
 import styled from 'styled-components';
 
-function Button({ variant, size, ...props }: ButtonProps) {
+function Button({ children, variant, ...props }: ButtonProps) {
+  const ref = useRef(null);
+  const { buttonProps } = useButton(props, ref);
+
   return (
     <StyledButton
+      ref={ref}
       variant={variant}
-      size={size}
-      {...props}
-    />
+      {...buttonProps}
+    >
+      {children}
+    </StyledButton>
   );
 }
 
 Button.displayName = 'Button';
 
-const StyledButton = styled(ButtonAria)<Pick<ButtonProps, 'variant' | 'size'>>`
+const StyledButton = styled.button<Pick<ButtonProps, 'variant'>>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -23,13 +30,15 @@ const StyledButton = styled(ButtonAria)<Pick<ButtonProps, 'variant' | 'size'>>`
   border-radius: 0.375rem;
   font-weight: 600;
   font-family: ${({ theme }) => theme.fonts.primary};
-  transition: color 0.2s;
-  outline: none;
+  transition:
+    color 0.2s,
+    background-color 0.2s;
   border: none;
   cursor: pointer;
   padding: 0.75rem 1.5rem;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
+  outline-color: ${({ theme }) => theme.colors.secondary};
 
   &:hover {
     background-color: #000;
@@ -53,9 +62,9 @@ const StyledButton = styled(ButtonAria)<Pick<ButtonProps, 'variant' | 'size'>>`
   }
 `;
 
-export type ButtonProps = ButtonAriaProps & {
+export type ButtonProps = Omit<ButtonAriaProps, 'children'> & {
+  children: React.ReactNode;
   variant?: 'primary' | 'secondary';
-  size?: 'default' | 'sm' | 'lg' | 'icon';
   style?: React.CSSProperties;
 };
 

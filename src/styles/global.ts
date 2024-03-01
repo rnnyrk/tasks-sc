@@ -36,7 +36,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     min-height: 100%;
     height: 100%;
-    background: ${theme.colors.white.background};
+    background: ${theme.colors.black.bg};
   }
 
   *,

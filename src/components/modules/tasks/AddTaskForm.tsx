@@ -1,12 +1,13 @@
 'use client';
 
+import styled from 'styled-components';
 import type { z } from 'zod';
 
 import { useZodForm } from '@hooks';
 import { useCreateTask } from '@queries/tasks';
 import { insertTaskSchema } from '@server/db/schema/tasks';
 import { Form, FormField } from '@common/form/Form';
-import { InputForm } from '@common/form/Input';
+import { Input } from '@common/form/Input';
 import { Button } from '@common/interaction/Button';
 
 export type AddTaskFormType = z.infer<typeof insertTaskSchema>;
@@ -27,16 +28,16 @@ export function AddTaskForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <StyledForm onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="title"
           render={({ field }) => {
             return (
-              <InputForm
-                label="Title"
+              <Input
+                placeholder="Task title.."
                 field={field}
-                style={{ marginBottom: 8 }}
+                style={{ marginRight: 8, flex: 2 }}
               />
             );
           }}
@@ -46,9 +47,14 @@ export function AddTaskForm() {
           type="submit"
           isDisabled={!form.formState.isValid}
         >
-          Add content
+          Add
         </Button>
-      </form>
+      </StyledForm>
     </Form>
   );
 }
+
+const StyledForm = styled.form`
+  width: 100%;
+  display: flex;
+`;

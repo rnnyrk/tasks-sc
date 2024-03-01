@@ -15,7 +15,7 @@ export function TasksOverview({ initialTasks }: TasksOverviewProps) {
 
   return (
     <StyledTasksOverview>
-      <Heading>Tasks</Heading>
+      <Heading color="white">Tasks</Heading>
       <TasksList tasks={tasks} />
       <AddTaskForm />
     </StyledTasksOverview>
@@ -27,8 +27,15 @@ const StyledTasksOverview = styled.div`
   flex-direction: column;
   gap: 1rem;
   align-items: flex-start;
-  max-width: 600px;
-  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  border-radius: 0.4rem;
+  padding: 1.6rem;
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.black};
 `;
 
 type TasksOverviewProps = {
