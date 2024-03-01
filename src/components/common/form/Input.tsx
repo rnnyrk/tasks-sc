@@ -14,14 +14,19 @@ function Input<T extends FieldValues, K extends Path<T> = any>({
   field,
   ...props
 }: InputFormProps<T, K>) {
+  const ariaLabel = label ?? props.placeholder ?? '';
   const { inputProps } = useTextField(props, field.ref as any);
 
   return (
-    <TextField {...props}>
+    <TextField
+      {...props}
+      aria-label={ariaLabel}
+    >
       {label && <Label id={inputProps.name}>{label}</Label>}
       <StyledInput
         {...inputProps}
         {...field}
+        aria-label={ariaLabel}
       />
       {description && <Text slot="description">{description}</Text>}
       <FieldError>{errorMessage}</FieldError>
@@ -29,13 +34,11 @@ function Input<T extends FieldValues, K extends Path<T> = any>({
   );
 }
 
-Input.displayName = 'Input';
-
 const StyledInput = styled.input`
   display: flex;
   width: 100%;
   height: 100%;
-  padding: 0.4rem 0.6rem;
+  padding: 0.6rem;
   font-size: 1.1rem;
   border: none;
   border-radius: 0.3rem;

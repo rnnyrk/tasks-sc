@@ -7,14 +7,12 @@ function Label({ children, id }: LabelProps) {
   return (
     <LabelAria
       htmlFor={id}
-      aria-labelledby={children}
+      aria-label={children}
     >
       <StyledLabel>{children}</StyledLabel>
     </LabelAria>
   );
 }
-
-Label.displayName = 'Label';
 
 const StyledLabel = styled.span`
   font-size: 16px;

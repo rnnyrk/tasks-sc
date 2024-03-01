@@ -5,14 +5,14 @@ import { useButton } from 'react-aria';
 import type { ButtonProps as ButtonAriaProps } from 'react-aria-components';
 import styled from 'styled-components';
 
-function Button({ children, variant, ...props }: ButtonProps) {
+function Button({ children, $variant, ...props }: ButtonProps) {
   const ref = useRef(null);
   const { buttonProps } = useButton(props, ref);
 
   return (
     <StyledButton
       ref={ref}
-      variant={variant}
+      $variant={$variant}
       {...buttonProps}
     >
       {children}
@@ -20,14 +20,13 @@ function Button({ children, variant, ...props }: ButtonProps) {
   );
 }
 
-Button.displayName = 'Button';
-
-const StyledButton = styled.button<Pick<ButtonProps, 'variant'>>`
+const StyledButton = styled.button<Pick<ButtonProps, '$variant'>>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
   border-radius: 0.375rem;
+  font-size: 1.1rem;
   font-weight: 600;
   font-family: ${({ theme }) => theme.fonts.primary};
   transition:
@@ -64,7 +63,7 @@ const StyledButton = styled.button<Pick<ButtonProps, 'variant'>>`
 
 export type ButtonProps = Omit<ButtonAriaProps, 'children'> & {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary';
+  $variant?: 'primary' | 'secondary';
   style?: React.CSSProperties;
 };
 
