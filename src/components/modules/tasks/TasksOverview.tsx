@@ -7,7 +7,7 @@ import { useTasks } from '@queries/tasks';
 import { Heading } from '@common/typography/Heading';
 
 import { AddTaskForm } from './AddTaskForm';
-import { Task } from './Task';
+import { TasksList } from './TasksList';
 
 export function TasksOverview({ initialTasks }: TasksOverviewProps) {
   const { data: tasks, isLoading } = useTasks({ initialTasks });
@@ -16,12 +16,7 @@ export function TasksOverview({ initialTasks }: TasksOverviewProps) {
   return (
     <StyledTasksOverview>
       <Heading>Tasks</Heading>
-      {tasks.map((task) => (
-        <Task
-          key={task.id}
-          task={task}
-        />
-      ))}
+      <TasksList tasks={tasks} />
       <AddTaskForm />
     </StyledTasksOverview>
   );

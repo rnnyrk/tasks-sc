@@ -1,25 +1,22 @@
 'use client';
 
-import { forwardRef } from 'react';
-import * as LabelPrimitive from '@radix-ui/react-label';
+import { Label as LabelAria } from 'react-aria-components';
 import styled from 'styled-components';
 
-const Label = forwardRef<
-  React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
->(({ ...props }, ref) => (
-  <StyledLabel
-    ref={ref}
-    {...props}
-  />
-));
+function Label({ children }: LabelProps) {
+  return <StyledLabel>{children}</StyledLabel>;
+}
 
 Label.displayName = 'Label';
 
-const StyledLabel = styled(LabelPrimitive.Root)`
+const StyledLabel = styled(LabelAria)`
   font-size: 16px;
   line-height: 1;
   font-weight: 600;
 `;
+
+type LabelProps = {
+  children: React.ReactNode;
+};
 
 export { Label };

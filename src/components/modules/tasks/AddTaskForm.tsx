@@ -22,8 +22,6 @@ export function AddTaskForm() {
 
   async function onSubmit(values: AddTaskFormType) {
     await onCreatePost(values);
-
-    // Reset form, close modal
     form.reset();
   }
 
@@ -46,7 +44,7 @@ export function AddTaskForm() {
 
         <Button
           type="submit"
-          disabled={!form.formState.isValid}
+          isDisabled={!form.formState.isValid}
         >
           Add content
         </Button>

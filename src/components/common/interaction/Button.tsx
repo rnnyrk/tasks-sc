@@ -1,22 +1,21 @@
 'use client';
 
-import { forwardRef } from 'react';
+import { Button as ButtonAria, type ButtonProps as ButtonAriaProps } from 'react-aria-components';
 import styled from 'styled-components';
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ variant, size, ...props }, ref) => {
+function Button({ variant, size, ...props }: ButtonProps) {
   return (
     <StyledButton
-      ref={ref}
       variant={variant}
       size={size}
       {...props}
     />
   );
-});
+}
 
 Button.displayName = 'Button';
 
-const StyledButton = styled.button<Pick<ButtonProps, 'variant' | 'size'>>`
+const StyledButton = styled(ButtonAria)<Pick<ButtonProps, 'variant' | 'size'>>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -29,11 +28,21 @@ const StyledButton = styled.button<Pick<ButtonProps, 'variant' | 'size'>>`
   border: none;
   cursor: pointer;
   padding: 0.75rem 1.5rem;
-  background-color: #000;
-  color: #fff;
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.white};
 
   &:hover {
     background-color: #000;
+  }
+
+  &[data-pressed] {
+    box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.1);
+    background-color: ${({ theme }) => theme.colors.secondary};
+  }
+
+  &[data-focus-visible] {
+    outline: 2px solid ${({ theme }) => theme.colors.secondary};
+    outline-offset: -1px;
   }
 
   &:disabled {
@@ -44,7 +53,7 @@ const StyledButton = styled.button<Pick<ButtonProps, 'variant' | 'size'>>`
   }
 `;
 
-export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+export type ButtonProps = ButtonAriaProps & {
   variant?: 'primary' | 'secondary';
   size?: 'default' | 'sm' | 'lg' | 'icon';
   style?: React.CSSProperties;
