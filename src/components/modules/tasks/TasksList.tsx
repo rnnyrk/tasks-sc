@@ -35,6 +35,7 @@ export function TasksList({ tasks }: TasksListProps) {
               aria-label="Delete"
               onPress={() => onDeleteTask(task.id)}
               isDisabled={isPending}
+              $variant="icon"
             >
               <CrossSvg className="close" />
             </Button>
@@ -132,7 +133,6 @@ const TasksListContainer = styled.div`
       .close {
         width: 1.2rem;
         height: 1.2rem;
-        stroke: white;
       }
 
       .react-aria-Button:not([slot]) {

@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import { useButton } from 'react-aria';
 import type { ButtonProps as ButtonAriaProps } from 'react-aria-components';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 function Button({ children, $variant, ...props }: ButtonProps) {
   const ref = useRef(null);
@@ -39,8 +39,17 @@ const StyledButton = styled.button<Pick<ButtonProps, '$variant'>>`
   color: ${({ theme }) => theme.colors.white};
   outline-color: ${({ theme }) => theme.colors.secondary};
 
+  svg {
+    stroke: ${({ theme }) => theme.colors.white};
+  }
+
   &:hover {
-    background-color: #000;
+    color: ${({ theme }) => theme.colors.black};
+    background-color: ${({ theme }) => theme.colors.primary.off};
+
+    svg {
+      stroke: ${({ theme }) => theme.colors.black};
+    }
   }
 
   &[data-pressed] {
@@ -59,11 +68,28 @@ const StyledButton = styled.button<Pick<ButtonProps, '$variant'>>`
     color: #d1d5db;
     cursor: not-allowed;
   }
+
+  ${({ $variant }) => {
+    if ($variant === 'secondary') {
+      return css`
+        background-color: #f3f4f6;
+        color: #000;
+      `;
+    }
+
+    if ($variant === 'icon') {
+      return css`
+        width: 2.5rem;
+        height: 2.5rem;
+        padding: 0;
+      `;
+    }
+  }}
 `;
 
 export type ButtonProps = Omit<ButtonAriaProps, 'children'> & {
   children: React.ReactNode;
-  $variant?: 'primary' | 'secondary';
+  $variant?: 'primary' | 'secondary' | 'icon';
   style?: React.CSSProperties;
 };
 

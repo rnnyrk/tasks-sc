@@ -8,25 +8,28 @@ import styled from 'styled-components';
 import { Label } from './Label';
 
 function Input<T extends FieldValues, K extends Path<T> = any>({
-  label,
   description,
   errorMessage,
   field,
   ...props
 }: InputFormProps<T, K>) {
-  const ariaLabel = label ?? props.placeholder ?? '';
-  const { inputProps } = useTextField(props, field.ref as any);
+  const textFieldProps = {
+    ...props,
+    'aria-label': props.label ?? props.placeholder ?? '',
+  };
+
+  const { inputProps } = useTextField(textFieldProps, field.ref as any);
 
   return (
     <TextField
       {...props}
-      aria-label={ariaLabel}
+      aria-label={textFieldProps['aria-label']}
     >
-      {label && <Label id={inputProps.name}>{label}</Label>}
+      {props.label && <Label id={inputProps.name}>{props.label}</Label>}
       <StyledInput
         {...inputProps}
         {...field}
-        aria-label={ariaLabel}
+        id={inputProps.name}
       />
       {description && <Text slot="description">{description}</Text>}
       <FieldError>{errorMessage}</FieldError>
