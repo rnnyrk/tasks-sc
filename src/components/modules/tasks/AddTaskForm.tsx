@@ -22,6 +22,7 @@ export function AddTaskForm() {
   const { mutateAsync: onCreatePost } = useCreateTask();
 
   async function onSubmit(values: AddTaskFormType) {
+    if (!values.title) return;
     await onCreatePost(values);
     form.reset();
   }
