@@ -1,73 +1,46 @@
 'use client';
 
 import type * as i from '@types';
-import { useState } from 'react';
-import { ListBox, ListBoxItem } from 'react-aria-components';
+import { GridList, GridListItem, Text } from 'react-aria-components';
 import styled from 'styled-components';
 
-export function Task({ task }: TaskProps) {
-  function onDeleteTask(event: React.MouseEvent<HTMLButtonElement>) {
-    event.preventDefault();
-    event.stopPropagation();
-    console.log('delete task');
-  }
-
-  return (
-    <TaskItemContainer>
-      <div>
-        <strong>{task.title}</strong>
-        {task.completed_at && <span>{task.completed_at.toString()}</span>}
-      </div>
-      <button onClick={onDeleteTask}>Delete</button>
-    </TaskItemContainer>
-  );
-}
-
-export const TaskItemContainer = styled.div`
-  display: flex;
-  appearance: none;
-  padding: 0.6rem;
-  width: 100%;
-  font-size: 1.1rem;
-
-  > div {
-    flex: 2;
-  }
-`;
-
-type TaskProps = {
-  task: i.Task;
-};
+import { useDeleteTask } from '@queries/tasks';
+import CrossSvg from '@vectors/cross.svg';
+import { Checkbox } from '@common/form/Checkbox';
+import { Button } from '@common/interaction/Button';
 
 export function TasksList({ tasks }: TasksListProps) {
-  const [active, setActive] = useState(false);
+  const { mutateAsync, isPending } = useDeleteTask();
 
-  function onToggle() {
-    setActive(!active);
-  }
-
-  function onSetItems(keys: string[]) {
-    console.log(keys);
+  async function onDeleteTask(taskId: string) {
+    await mutateAsync(taskId);
   }
 
   return (
     <TasksListContainer>
-      <ListBox
+      <GridList
         aria-label="Tasks"
         selectionMode="multiple"
-        // onSelectionChange={onSetItems}
       >
         {tasks.map((task) => (
-          <ListBoxItem
+          <GridListItem
             key={task.id}
             id={task.id}
-            aria-label={task.title}
             textValue={task.title}
           >
-            <Task task={task} />
-          </ListBoxItem>
+            <Checkbox slot="selection" />
+            <span>{task.title}</span>
+            {task.completed_at && <Text slot="description">{task.completed_at.toString()}</Text>}
+            <Button
+              aria-label="Delete"
+              onPress={() => onDeleteTask(task.id)}
+              isDisabled={isPending}
+            >
+              <CrossSvg className="close" />
+            </Button>
+          </GridListItem>
         ))}
-      </ListBox>
+      </GridList>
     </TasksListContainer>
   );
 }
@@ -75,52 +48,115 @@ export function TasksList({ tasks }: TasksListProps) {
 const TasksListContainer = styled.div`
   width: 100%;
 
-  .react-aria-ListBox {
+  .react-aria-GridList {
+    width: 100%;
     display: flex;
-    gap: 0.2rem;
     flex-direction: column;
+    gap: 2px;
     max-height: inherit;
     overflow: auto;
     forced-color-adjust: none;
-    outline: none;
+    box-sizing: border-box;
+    outline-color: ${({ theme }) => theme.colors.white};
 
     &[data-focus-visible] {
-      outline: 2px solid ${({ theme }) => theme.colors.primary};
+      outline: 2px solid ${({ theme }) => theme.colors.white};
       outline-offset: -1px;
     }
-  }
 
-  .react-aria-ListBoxItem {
-    width: 100%;
-    padding: 0.2rem 0.5rem;
-    border-radius: 0.4rem;
-    outline: none;
-    cursor: pointer;
-    font-size: 1rem;
-    position: relative;
-    display: flex;
-    color: ${({ theme }) => theme.colors.black};
-    background-color: ${({ theme }) => theme.colors.white.bg};
-
-    &:hover,
-    &[data-focus-visible] {
-      background-color: ${({ theme }) => theme.colors.primary.off};
-      outline: 2px solid ${({ theme }) => theme.colors.primary};
-      outline-offset: -2px;
-    }
-
-    &[data-selected] {
-      background-color: ${({ theme }) => theme.colors.secondary};
+    .react-aria-GridListItem {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem;
+      margin-bottom: .2rem;
+      border-radius: 6px;
+      border: 1px solid ${({ theme }) => theme.colors.gray};
+      outline: none;
+      cursor: pointer;
       color: ${({ theme }) => theme.colors.white};
+      position: relative;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
 
       &[data-focus-visible] {
         background-color: ${({ theme }) => theme.colors.secondary.off};
         color: ${({ theme }) => theme.colors.black};
-        outline-color: ${({ theme }) => theme.colors.secondary};
-        outline-offset: -4px;
+        outline: 2px solid ${({ theme }) => theme.colors.secondary};
+        outline-offset: -2px;
+      }
+
+      &[data-pressed] {
+        background-color: ${({ theme }) => theme.colors.secondary.off};
+      }
+
+      &[data-selected] {
+        background-color: ${({ theme }) => theme.colors.primary.off};
+        color: ${({ theme }) => theme.colors.black};
+        --focus-ring-color: ${({ theme }) => theme.colors.primary};
+
+        &[data-focus-visible] {
+          background-color: ${({ theme }) => theme.colors.secondary.off};
+          outline-color: ${({ theme }) => theme.colors.secondary};
+          outline-offset: -4px;
+        }
+
+        .react-aria-Button {
+          color: ${({ theme }) => theme.colors.white};
+          fill: ${({ theme }) => theme.colors.white};
+          --highlight-hover: rgb(255 255 255 / 0.1);
+          --highlight-pressed: rgb(255 255 255 / 0.2);
+        }
+      }
+
+      &[data-disabled] {
+        color: ${({ theme }) => theme.colors.gray};
+      }
+
+      > div {
+        display: flex;
+        align-items: center;
+        width: 100%;
+      }
+
+      span {
+        flex: 2;
+        font-size: 1.1rem;
+        font-weight: 600;
+        padding: 0 0.2rem;
+      }
+
+      .close {
+        width: 1.2rem;
+        height: 1.2rem;
+        stroke: white;
+      }
+
+      .react-aria-Button:not([slot]) {
+        margin-left: auto;
+      }
+
+      .react-aria-Button {
+        background: transparent;
+        border: none;
+        font-size: 1.2rem;
+        line-height: 1.2em;
+        padding: 0.286rem 0.429rem;
+        transition: background 200ms;
+
+        &[data-hovered] {
+          background: var(--highlight-hover);
+        }
+
+        &[data-pressed] {
+          background: var(--highlight-pressed);
+          box-shadow: none;
+        }
       }
     }
-  }
 `;
 
 type TasksListProps = {

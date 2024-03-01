@@ -15,7 +15,7 @@ export function TasksOverview({ initialTasks }: TasksOverviewProps) {
 
   return (
     <StyledTasksOverview>
-      <Heading color="white">Tasks</Heading>
+      <Heading $color="white">Tasks</Heading>
       <TasksList tasks={tasks} />
       <AddTaskForm />
     </StyledTasksOverview>
