@@ -72,8 +72,7 @@ const StyledButton = styled.button<Pick<ButtonProps, '$variant'>>`
   ${({ $variant }) => {
     if ($variant === 'secondary') {
       return css`
-        background-color: #f3f4f6;
-        color: #000;
+        background-color: ${({ theme }) => theme.colors.secondary};
       `;
     }
 
