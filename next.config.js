@@ -7,6 +7,10 @@ const nextConfig = {
   output: 'standalone',
   poweredByHeader: false,
 
+  compiler: {
+    styledComponents: true,
+  },
+
   async headers() {
     return [
       {

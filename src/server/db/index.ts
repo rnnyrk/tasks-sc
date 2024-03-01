@@ -1,12 +1,9 @@
-// Example model schema from the Drizzle docs
-// https://orm.drizzle.team/docs/sql-schema-declaration
 import Database from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 
 import { env } from '@env';
 
-import * as movies from './schema/movies';
-import * as posts from './schema/posts';
+import * as tasks from './schema/tasks';
 
 export const db = drizzle(
   new Database(env.DATABASE_URL, {
@@ -14,8 +11,7 @@ export const db = drizzle(
   }),
   {
     schema: {
-      ...movies,
-      ...posts,
+      ...tasks,
     },
   },
 );

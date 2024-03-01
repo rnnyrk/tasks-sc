@@ -1,8 +1,4 @@
-import type { movies } from './schema/movies';
-import type { posts } from './schema/posts';
+import type { tasks } from './schema/tasks';
 
-export type Movie = typeof movies.$inferSelect;
-export type InsertMovie = typeof movies.$inferInsert;
-
-export type Post = typeof posts.$inferSelect;
-export type InsertPost = typeof posts.$inferInsert;
+export type Task = typeof tasks.$inferSelect;
+export type InsertTask = typeof tasks.$inferInsert;

@@ -1,15 +1,16 @@
 import { randomUUID } from 'crypto';
 import { int, text } from 'drizzle-orm/sqlite-core';
+import { createInsertSchema } from 'drizzle-zod';
 
 import { createTable } from '../helpers';
 
-export const movies = createTable('movie', {
+export const tasks = createTable('tasks', {
   id: text('id', { length: 36 })
     .primaryKey()
     .$defaultFn(() => randomUUID())
     .notNull(),
   title: text('title', { length: 256 }),
-  director: text('director', { length: 256 }),
-  year: int('year', { mode: 'number' }),
-  genres: text('genres'),
+  completed_at: int('completed_at', { mode: 'timestamp_ms' }),
 });
+
+export const insertTaskSchema = createInsertSchema(tasks);

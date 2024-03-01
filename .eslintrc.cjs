@@ -4,7 +4,7 @@ const config = {
   parserOptions: {
     project: true,
   },
-  plugins: ['sonarjs', '@typescript-eslint'],
+  plugins: ['sonarjs', 'jsx-a11y', '@typescript-eslint'],
   extends: [
     'next/core-web-vitals',
     'plugin:sonarjs/recommended',

@@ -1,4 +1,4 @@
-/** @type {import('prettier').Config & import('prettier-plugin-tailwindcss').PluginOptions} */
+/** @type {import('prettier').Config} */
 const config = {
   singleQuote: true,
   singleAttributePerLine: true,
@@ -14,7 +14,7 @@ const config = {
     '',
     '^[./]',
   ],
-  plugins: ['prettier-plugin-tailwindcss', '@ianvs/prettier-plugin-sort-imports'],
+  plugins: ['@ianvs/prettier-plugin-sort-imports'],
 };
 
 export default config;

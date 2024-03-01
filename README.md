@@ -16,8 +16,8 @@ Starter for NextJS 14 with:
 ## Getting Started
 
 ```bash
-git clone git@github.com:rnnyrk/tasks-sc.git PROJECT_NAME
-cd PROJECT_NAME && pnpm i
+git clone git@github.com:rnnyrk/tasks-sc.git
+cd tasks-sc && pnpm i
 pnpm run db:push && pnpm dev
 ```
 
