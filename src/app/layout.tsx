@@ -1,20 +1,14 @@
-import './global.css';
+import { Providers } from '@common/layout/Providers';
+import { RootLayout } from '@common/layout/RootLayout';
+import { StyledComponentsRegistry } from '@common/layout/StyledComponentsRegistry';
 
-import { Inter } from 'next/font/google';
-
-import { cn } from '@utils';
-import { Providers } from '@modules/layouts/Providers';
-import { RootLayout } from '@modules/layouts/RootLayout';
-
-const inter = Inter({ subsets: ['latin'] });
-
-const siteName = 'Ronny Rook';
-const siteUrl = 'https://rnny.nl';
-const siteDescription = 'Javascript developer from Amsterdam';
+const siteName = 'Tasks Manager';
+const siteUrl = 'https://task-manager.nl';
+const siteDescription = 'Managing tasks with ease.';
 
 export const metadata = {
   title: {
-    default: `About me | ${siteName}`,
+    default: `Home | ${siteName}`,
     template: `%s | ${siteName}`,
   },
   description: siteDescription,
@@ -65,14 +59,15 @@ export const metadata = {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <html
-      lang="en"
-      className={cn('bg-white text-black dark:bg-[#111111] dark:text-white', inter.className)}
-    >
+    <html lang="en">
       <head />
-      <Providers>
-        <RootLayout>{children}</RootLayout>
-      </Providers>
+      <body>
+        <Providers>
+          <StyledComponentsRegistry>
+            <RootLayout>{children}</RootLayout>
+          </StyledComponentsRegistry>
+        </Providers>
+      </body>
     </html>
   );
 };
