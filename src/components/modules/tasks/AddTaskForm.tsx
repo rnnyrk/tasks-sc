@@ -1,6 +1,5 @@
 'use client';
 
-import styled from 'styled-components';
 import type { z } from 'zod';
 
 import { useZodForm } from '@hooks';
@@ -9,6 +8,7 @@ import { insertTaskSchema } from '@server/db/schema/tasks';
 import { Form, FormField } from '@common/form/Form';
 import { Input } from '@common/form/Input';
 import { Button } from '@common/interaction/Button';
+import { StyledForm } from '@common/layout/StyledForm';
 
 export type AddTaskFormType = z.infer<typeof insertTaskSchema>;
 
@@ -19,7 +19,7 @@ export function AddTaskForm() {
     },
   });
 
-  const { mutateAsync: onCreatePost } = useCreateTask();
+  const { mutateAsync: onCreatePost, isPending } = useCreateTask();
 
   async function onSubmit(values: AddTaskFormType) {
     if (!values.title) return;
@@ -46,7 +46,7 @@ export function AddTaskForm() {
 
         <Button
           type="submit"
-          isDisabled={!form.formState.isValid}
+          isDisabled={!form.formState.isValid || isPending}
         >
           Add
         </Button>
@@ -54,8 +54,3 @@ export function AddTaskForm() {
     </Form>
   );
 }
-
-const StyledForm = styled.form`
-  width: 100%;
-  display: flex;
-`;
