@@ -1,19 +1,52 @@
 'use client';
 
 import type * as i from '@types';
-import { GridList, GridListItem, Text } from 'react-aria-components';
+import { useState } from 'react';
+import Link from 'next/link';
+import { GridList, GridListItem, Text, type Selection } from 'react-aria-components';
 import styled from 'styled-components';
 
-import { useDeleteTask } from '@queries/tasks';
-import CrossSvg from '@vectors/cross.svg';
+import { useDeleteTask, useUpdateTask } from '@queries/tasks';
+import { formatDate } from '@utils/dates';
+import CloseSvg from '@vectors/close.svg';
+import PenSvg from '@vectors/pen.svg';
 import { Checkbox } from '@common/form/Checkbox';
 import { Button } from '@common/interaction/Button';
 
 export function TasksList({ tasks }: TasksListProps) {
-  const { mutateAsync, isPending } = useDeleteTask();
+  const { mutateAsync: onDelete, isPending: isDeleting } = useDeleteTask();
+  const { mutateAsync: onUpdate, isPending: isUpdating } = useUpdateTask();
+
+  const [selectedTasks, setSelectedTasks] = useState<Selection>(
+    new Set(tasks.filter((task) => task.completed_at).map((task) => task.id) || []),
+  );
 
   async function onDeleteTask(taskId: string) {
-    await mutateAsync(taskId);
+    await onDelete(taskId);
+  }
+
+  async function onChangeState(isSelected: boolean, taskId: string) {
+    await onUpdate({
+      taskId,
+      values: {
+        completed_at: isSelected ? new Date() : null,
+      },
+    });
+  }
+
+  async function onSelectionChange(newTasks: Selection) {
+    if (newTasks === 'all') return;
+
+    let difference = Array.from(new Set([...selectedTasks].filter((x) => !newTasks.has(x))));
+    if (!difference.length && selectedTasks !== 'all') {
+      difference = Array.from(new Set([...newTasks].filter((x) => !selectedTasks.has(x))));
+    }
+
+    for (const key of difference) {
+      const completedAt = tasks.find((task) => task.id === key)?.completed_at;
+      await onChangeState(!completedAt, key as string);
+      setSelectedTasks(newTasks);
+    }
   }
 
   return (
@@ -21,6 +54,8 @@ export function TasksList({ tasks }: TasksListProps) {
       <GridList
         aria-label="Tasks"
         selectionMode="multiple"
+        selectedKeys={selectedTasks}
+        onSelectionChange={onSelectionChange}
       >
         {tasks.map((task) => (
           <GridListItem
@@ -29,15 +64,29 @@ export function TasksList({ tasks }: TasksListProps) {
             textValue={task.title}
           >
             <Checkbox slot="selection" />
-            <span>{task.title}</span>
-            {task.completed_at && <Text slot="description">{task.completed_at.toString()}</Text>}
+            <StyledListContent>
+              <strong>{task.title}</strong>
+              {task.completed_at && (
+                <StyledDate slot="description">
+                  {formatDate(task.completed_at, 'd MMMM yyyy HH:mm')}
+                </StyledDate>
+              )}
+            </StyledListContent>
+            <Link href={`/edit/${task.id}`}>
+              <Button
+                aria-label="Edit"
+                $variant="icon"
+              >
+                <PenSvg className="icon" />
+              </Button>
+            </Link>
             <Button
               aria-label="Delete"
               onPress={() => onDeleteTask(task.id)}
-              isDisabled={isPending}
+              isDisabled={isDeleting || isUpdating}
               $variant="icon"
             >
-              <CrossSvg className="close" />
+              <CloseSvg className="icon" />
             </Button>
           </GridListItem>
         ))}
@@ -45,6 +94,21 @@ export function TasksList({ tasks }: TasksListProps) {
     </TasksListContainer>
   );
 }
+
+const StyledListContent = styled.div`
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+
+  strong {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+`;
+
+const StyledDate = styled(Text)`
+  font-size: 12px;
+`;
 
 const TasksListContainer = styled.div`
   width: 100%;
@@ -123,14 +187,7 @@ const TasksListContainer = styled.div`
         width: 100%;
       }
 
-      span {
-        flex: 2;
-        font-size: 1.1rem;
-        font-weight: 600;
-        padding: 0 0.2rem;
-      }
-
-      .close {
+      .icon {
         width: 1.2rem;
         height: 1.2rem;
       }

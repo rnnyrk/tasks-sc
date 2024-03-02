@@ -40,7 +40,7 @@ const StyledButton = styled.button<Pick<ButtonProps, '$variant'>>`
   outline-color: ${({ theme }) => theme.colors.secondary};
 
   svg {
-    stroke: ${({ theme }) => theme.colors.white};
+    fill: ${({ theme }) => theme.colors.white};
   }
 
   &:hover {
@@ -48,7 +48,7 @@ const StyledButton = styled.button<Pick<ButtonProps, '$variant'>>`
     background-color: ${({ theme }) => theme.colors.primary.off};
 
     svg {
-      stroke: ${({ theme }) => theme.colors.black};
+      fill: ${({ theme }) => theme.colors.black};
     }
   }
 
