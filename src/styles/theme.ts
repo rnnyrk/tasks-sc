@@ -9,7 +9,7 @@ export const theme = {
 
     black: Object.assign('#0c0c0c', {
       off: '#04041b',
-      bg: '#303030',
+      bg: '#1a1a1a',
     }),
     gray: Object.assign('#a0a0a0', {
       off: '#e0e0e0',
