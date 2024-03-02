@@ -14,3 +14,4 @@ export const tasks = createTable('tasks', {
 });
 
 export const insertTaskSchema = createInsertSchema(tasks);
+export const updateTaskSchema = insertTaskSchema.pick({ title: true, completed_at: true });
