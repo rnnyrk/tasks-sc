@@ -10,7 +10,7 @@ export const env = createEnv({
     DATABASE_URL: z
       .string()
       .refine(
-        (str) => !str.includes('YOUR_SQLITE_DATABASE_URL'),
+        (str) => !str.includes('postgres://[user]:[password]@[neon_hostname]/[dbname]'),
         'You forgot to change the default URL',
       ),
     NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
