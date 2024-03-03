@@ -7,6 +7,8 @@ export const metadata = {
   title: 'Tasks',
 };
 
+export const revalidate = 0;
+
 async function Home() {
   const initialTasks = await getTasks();
 
