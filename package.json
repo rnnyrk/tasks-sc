@@ -14,8 +14,6 @@
     "dev": "next dev",
     "build": "next build",
     "lint": "next lint",
-    "db:generate": "drizzle-kit generate:pg --schema ./src/server/db/schema/index.ts --out=./src/server/migrations",
-    "db:studio": "drizzle-kit studio",
     "typecheck": "tsc --noEmit",
     "test": "npx concurrently 'npm run lint' 'npm run typecheck'"
   },

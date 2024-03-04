@@ -8,7 +8,7 @@ Starter for NextJS 14 with:
 - React Server Actions
 - React Query
 - Styled Components
-- SQLite
+- Postgresql (Neon)
 - TypeScript
 - Zod
 - Zustand
@@ -17,11 +17,8 @@ Starter for NextJS 14 with:
 
 ```bash
 git clone git@github.com:rnnyrk/tasks-sc.git
-cd tasks-sc && pnpm i
-pnpm run db:push && pnpm dev
+cd tasks-sc && pnpm i && pnpm dev
 ```
-
-To add items to SQLite database, run `pnpm run db:studio` and use the SQLite Studio to add items to the database.
 
 ## Styled Component error
 
